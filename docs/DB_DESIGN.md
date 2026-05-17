@@ -56,8 +56,8 @@ erDiagram
 | `created_at` | TEXT | 建立時間 (ISO 8601) |
 
 ## 3. SQL 建表語法
-儲存於專案的 `database/schema.sql`，並於啟動時初始化庫。
+儲存於專案的 `database/schema.sql`，並於啟動時初始化資料庫。
 
 ## 4. Python Model 程式碼
 儲存於 `app/models/merchant_model.py` 與 `app/models/product_model.py`。
-採用 `sqlite3` 庫撰寫標準的 CRUD 操作。
+採用 `sqlite3` 操作。
