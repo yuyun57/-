@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white pt-4 pb-0 border-0">
+                <h4 class="fw-bold m-0 text-center">✨ 新增剩食商品</h4>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('merchant.create') }}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">商品名稱 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="name" required placeholder="例如: 綜合便當">
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">商品類型 <span class="text-danger">*</span></label>
+                            <select class="form-select" name="type" required>
+                                <option value="" disabled selected>請選擇...</option>
+                                <option value="便當">便當</option>
+                                <option value="麵包">麵包</option>
+                                <option value="生鮮">生鮮</option>
+                                <option value="飲品">飲品</option>
+                                <option value="其他">其他</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">領取時間 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="pickup_time" required placeholder="例如: 18:00 - 19:30">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold ext-muted">原價</label>
+                            <input type="number" class="form-control" name="original_price" placeholder="例如: 150">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">優惠價 <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control text-danger fw-bold" name="discount_price" required placeholder="例如: 80">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">剩餘數量 <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" name="quantity" required placeholder="例如: 5" min="1">
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success py-2 fw-bold">確認上架</button>
+                        <a href="{{ url_for('merchant.index') }}" class="btn btn-link text-muted text-decoration-none">取消並返回</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

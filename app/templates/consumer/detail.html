@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('consumer.index') }}" class="text-success text-decoration-none">找剩食</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+            </ol>
+        </nav>
+
+        <div class="card shadow-sm border-0">
+            <div class="bg-secondary bg-opacity-10 d-flex flex-column align-items-center justify-content-center" style="height: 300px;">
+                <span class="fs-1">🍲</span>
+                <span class="text-muted mt-2">商品圖片尚無提供</span>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-2">
+                    <span class="badge bg-success bg-opacity-75 fs-6">{{ product.merchant_name }}</span>
+                    <span class="badge bg-light text-dark border fs-6">{{ product.type }}</span>
+                    {% if product.status == '上架' %}
+                        <span class="badge bg-info text-dark ms-2">現正發售</span>
+                    {% else %}
+                        <span class="badge bg-secondary ms-2">{{ product.status }}</span>
+                    {% endif %}
+                </div>
+                
+                <h2 class="fw-bold mt-3">{{ product.name }}</h2>
+                <h5 class="text-muted mb-4">地址: {{ product.merchant_address if product.merchant_address else "未提供" }}</h5>
+
+                <hr>
+
+                <div class="row text-center my-4">
+                    <div class="col">
+                        <p class="text-muted mb-1">剩餘數量</p>
+                        <h4 class="fw-bold">{{ product.quantity }} 份</h4>
+                    </div>
+                    <div class="col border-start">
+                        <p class="text-muted mb-1">可領取時間</p>
+                        <h4 class="fw-bold text-success">{{ product.pickup_time }}</h4>
+                    </div>
+                </div>
+
+                <div class="bg-light p-3 rounded text-center">
+                    <p class="text-muted mb-1">優惠價格</p>
+                    <span class="text-danger fw-bold display-5">${{ product.discount_price }}</span>
+                    {% if product.original_price %}
+                    <span class="text-muted text-decoration-line-through fs-5 ms-2">原價 ${{ product.original_price }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-footer bg-white border-0 pb-4 text-center">
+                <a href="{{ url_for('consumer.index') }}" class="btn btn-outline-secondary btn-lg">返回列表</a>
+                {% if product.status == '上架' and product.quantity > 0 %}
+                <button class="btn btn-success btn-lg ms-2" onclick="alert('請於指定時間前往實體店面：{{ product.merchant_address }} 領取購買！')">準備前往購買</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

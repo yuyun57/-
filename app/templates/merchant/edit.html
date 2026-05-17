@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white pt-4 pb-0 border-0">
+                <h4 class="fw-bold m-0 text-center">✏️ 編輯商品資訊</h4>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('merchant.update', id=product.id) }}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">商品名稱 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="name" value="{{ product.name }}" required>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">商品類型 <span class="text-danger">*</span></label>
+                            <select class="form-select" name="type" required>
+                                <option value="便當" {% if product.type == '便當' %}selected{% endif %}>便當</option>
+                                <option value="麵包" {% if product.type == '麵包' %}selected{% endif %}>麵包</option>
+                                <option value="生鮮" {% if product.type == '生鮮' %}selected{% endif %}>生鮮</option>
+                                <option value="飲品" {% if product.type == '飲品' %}selected{% endif %}>飲品</option>
+                                <option value="其他" {% if product.type == '其他' %}selected{% endif %}>其他</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">領取時間 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="pickup_time" value="{{ product.pickup_time }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">原價</label>
+                            <input type="number" class="form-control" name="original_price" value="{{ product.original_price }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">優惠價 <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control text-danger fw-bold" name="discount_price" value="{{ product.discount_price }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">剩餘數量 <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" name="quantity" value="{{ product.quantity }}" required min="0">
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary py-2 fw-bold">儲存變更</button>
+                        <a href="{{ url_for('merchant.index') }}" class="btn btn-link text-muted text-decoration-none">取消並返回</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

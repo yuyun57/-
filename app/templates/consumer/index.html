@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <!-- 側邊欄篩選區 -->
+    <div class="col-md-3 mb-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title fw-bold">🔍 進階篩選</h5>
+                <hr>
+                <form action="{{ url_for('consumer.index') }}" method="GET">
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">餐點類型</label>
+                        <select class="form-select text-secondary" name="type">
+                            <option value="">全部類型</option>
+                            <option value="便當" {% if filters.get('type') == '便當' %}selected{% endif %}>🍱 便當</option>
+                            <option value="麵包" {% if filters.get('type') == '麵包' %}selected{% endif %}>🥖 麵包</option>
+                            <option value="生鮮" {% if filters.get('type') == '生鮮' %}selected{% endif %}>🥬 生鮮</option>
+                            <option value="飲品" {% if filters.get('type') == '飲品' %}selected{% endif %}>🥤 飲品</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">最高預算</label>
+                        <input type="number" class="form-control text-secondary" name="max_price" placeholder="例如: 100" value="{{ filters.get('max_price', '') }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">指定商家</label>
+                        <select class="form-select text-secondary" name="merchant_id">
+                            <option value="">全部商家</option>
+                            {% for m in merchants %}
+                            <option value="{{ m.id }}" {% if filters.get('merchant_id') == m.id|string %}selected{% endif %}>{{ m.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">搜尋</button>
+                    <a href="{{ url_for('consumer.index') }}" class="btn btn-link text-muted w-100 text-decoration-none mt-1">清除條件</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 商品列表 -->
+    <div class="col-md-9">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold m-0">所有剩食商品</h4>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for p in products %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center" style="height: 150px;">
+                        <span class="fs-1">🍲</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <span class="badge bg-success bg-opacity-75 text-white">{{ p.merchant_name }}</span>
+                            <span class="badge bg-light text-dark border">{{ p.type }}</span>
+                        </div>
+                        <h5 class="card-title fw-bold text-truncate">{{ p.name }}</h5>
+                        
+                        <div class="d-flex justify-content-between align-items-end mt-3">
+                            <div>
+                                <span class="text-danger fw-bold fs-5">${{ p.discount_price }}</span>
+                                {% if p.original_price %}<small class="text-muted text-decoration-line-through">${{ p.original_price }}</small>{% endif %}
+                            </div>
+                            <span class="text-secondary small">🛒 {{ p.quantity }} 份</span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-top-0 pt-0">
+                        <a href="{{ url_for('consumer.detail', id=p.id) }}" class="btn btn-outline-success w-100">查看詳情</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center text-muted py-5">
+                <h3 class="mb-3">😢</h3>
+                <p>找不到符合條件的商品</p>
+                <a href="{{ url_for('consumer.index') }}" class="btn btn-sm btn-outline-secondary">顯示所有商品</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
